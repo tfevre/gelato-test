@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import { ethers } from "ethers";
 import { GelatoRelay, SponsoredCallERC2771Request } from "@gelatonetwork/relay-sdk";
+import { smartContract } from './abi';
 const relay = new GelatoRelay();
 
 function App() {
@@ -10,7 +11,8 @@ function App() {
     const accounts = await provider.send("eth_requestAccounts", []);
     
     // Set up on-chain variables, such as target address
-    const counter = "0x01A9B3d53b009A1c9Ea01589235848c5e2bAD2e4"; 
+    // const counter = "0x01A9B3d53b009A1c9Ea01589235848c5e2bAD2e4"; Goerli
+    const counter = "0xBE13A62A7eb0eD47811a85631DcB1b535DBa346F"; // Mumbai
     const abi = ["function captureTheFlag()"];
     
     const signer = provider.getSigner();
@@ -31,8 +33,26 @@ function App() {
     // Without a specific API key, the relay request will fail! 
     // Go to https://relay.gelato.network to get a testnet API key with 1Balance.
     // Send a relay request using Gelato Relay!
-    const apiKey = 'PIEXdwAXAf3Yna4yZcOi_MAv7IBs3UfSqiNDM9n2Pi0_';
+    // const apiKey = 'PIEXdwAXAf3Yna4yZcOi_MAv7IBs3UfSqiNDM9n2Pi0_';
+    const apiKey = 'uyPd4W38eYhGse97STs6cgSf4vvl8gK83deI5026ivc_';
     const relayResponse = await relay.sponsoredCallERC2771(request, provider, apiKey);
+    console.log(relayResponse);
+  }
+
+  async function getCurrentHolder(){
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const accounts = await provider.send("eth_requestAccounts", []);
+    
+    // Set up on-chain variables, such as target address
+    // const counter = "0x01A9B3d53b009A1c9Ea01589235848c5e2bAD2e4"; Goerli
+    const counter = "0xBE13A62A7eb0eD47811a85631DcB1b535DBa346F"; // Mumbai
+  
+    
+    const signer = provider.getSigner();
+    const user = signer.getAddress();
+    const contract = new ethers.Contract(counter, smartContract.abi, signer);
+    const { data } = await contract.getCurrentHolder();
+    console.log(data);
   }
   
 
@@ -44,6 +64,7 @@ function App() {
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <button onClick={test}>Test</button>
+        <button onClick={getCurrentHolder}>Current Holder</button>
       </header>
     </div>
   );
