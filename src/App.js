@@ -33,8 +33,8 @@ function App() {
     // Without a specific API key, the relay request will fail! 
     // Go to https://relay.gelato.network to get a testnet API key with 1Balance.
     // Send a relay request using Gelato Relay!
-    // const apiKey = 'PIEXdwAXAf3Yna4yZcOi_MAv7IBs3UfSqiNDM9n2Pi0_';
-    const apiKey = 'uyPd4W38eYhGse97STs6cgSf4vvl8gK83deI5026ivc_';
+    const apiKey = 'PIEXdwAXAf3Yna4yZcOi_MAv7IBs3UfSqiNDM9n2Pi0_'; 
+   
     const relayResponse = await relay.sponsoredCallERC2771(request, provider, apiKey);
     console.log(relayResponse);
   }
